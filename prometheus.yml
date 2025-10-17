@@ -1,0 +1,33 @@
+# Prometheus configuration for OpenStack monitoring
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "openstack_rules.yml"
+
+scrape_configs:
+  # OpenStack Prometheus Exporter
+  - job_name: 'openstack-exporter'
+    static_configs:
+      - targets: ['localhost:9091']
+    scrape_interval: 15s
+    metrics_path: /metrics
+
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Optional: Node Exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+    scrape_interval: 5s
+
+# Alerting rules (optional)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - alertmanager:9093
